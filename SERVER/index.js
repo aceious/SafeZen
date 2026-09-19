@@ -194,7 +194,6 @@ app.post("/login", (req, res) => {
 									sameSite: "None",
 									maxAge: 60 * 60 * 24 * 365,
 									path: "/",
-									domain: ".safezen.onrender.com",
 								});
 								res.setHeader("Set-Cookie", serialized);
 								res.status(200).json({
@@ -243,7 +242,6 @@ app.post("/login-google", (req, res) => {
 								sameSite: "None",
 								maxAge: 60 * 60 * 24 * 365,
 								path: "/",
-								domain: ".safezen.onrender.com",
 							});
 							res.setHeader("Set-Cookie", serialized);
 							res.status(200).json({
