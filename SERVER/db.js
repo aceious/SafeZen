@@ -14,6 +14,10 @@ const db = new Pool({
 	// password: 'Dikshant@2312',
 });
 
+db.on('connect', (client) => {
+  client.query('SET search_path TO safezen, public');
+});
+
 // console.log(db);
 
 export default db;
