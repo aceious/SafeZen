@@ -133,7 +133,7 @@ app.get("/IndTherapy", (req, res) => {
 		const sql = "SELECT * FROM indtherapy";
 		db.query(sql, (err, data) => {
 			if (err) return res.json(err);
-			return res.json(data);
+			return res.json(data.rows);
 		});
 	} catch (err) {
 		console.error(err.message);
@@ -149,7 +149,7 @@ app.get("/RelTherapy", (req, res) => {
 		const sql = "SELECT * FROM reltherapy";
 		db.query(sql, (err, data) => {
 			if (err) return res.json(err);
-			return res.json(data);
+			return res.json(data.rows);
 		});
 	} catch (err) {
 		console.error(err.message);
@@ -162,7 +162,7 @@ app.get("/doctorsData", (req, res) => {
 		db.query(sql, (err, data) => {
 			if (err) return res.json(err);
 			// console.log(data);
-			return res.json(data);
+			return res.json(data.rows);
 		});
 	} catch (err) {
 		console.error(err.message);
@@ -173,10 +173,10 @@ app.post("/login", (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
 	try {
-		db.query("SELECT * FROM user_data WHERE emailID = ?", [email], (err, result) => {
+		db.query('SELECT * FROM user_data WHERE "emailId" = $1', [email], (err, result) => {
 			if (err) return res.json({ Error: "Database query error" });
-			if (result.length > 0) {
-				const user = result[0];
+			if (result.rows.length > 0) {
+				const user = result.rows[0];
 				const storedHashedPassword = user.Password;
 				bcrypt.compare(password, storedHashedPassword, (err, valid) => {
 					if (err) return res.json({ Error: "Error comparing password" });
@@ -224,10 +224,10 @@ app.post("/login-google", (req, res) => {
 	console.log(email);
 	const password = req.body.password;
 	try {
-		db.query("SELECT * FROM user_data WHERE emailID = ?", [email], (err, result) => {
+		db.query('SELECT * FROM user_data WHERE "emailId" = $1', [email], (err, result) => {
 			if (err) return res.json({ Error: "Database query error" });
-			if (result.length > 0) {
-				const user = result[0];
+			if (result.rows.length > 0) {
+				const user = result.rows[0];
 				const storedHashedPassword = user.Password;
 				if (storedHashedPassword === password) {
 					const token = jwt.sign(
@@ -261,12 +261,12 @@ app.post("/login-google", (req, res) => {
 			} else {
 				try {
 					db.query(
-						"INSERT INTO user_data (emailId, Password, age, noOfSessions) VALUES (?, ?, ?, ?)",
+						'INSERT INTO user_data ("emailId", "Password", age, "noOfSessions") VALUES ($1, $2, $3, $4) RETURNING *',
 						[email, password, 0, 0],
 						(err, result) => {
 							if (err) return res.json({ Error: "Error storing data" });
 							else {
-								const user = result[0];
+								const user = result.rows[0];
 								return res.json({ Status: "Success" });
 							}
 						}
@@ -287,9 +287,9 @@ app.post("/signup", (req, res) => {
 	const password = req.body.password;
 	const age = req.body.age;
 	try {
-		db.query("SELECT * FROM user_data WHERE emailId = ?", [email], (err, checkResult) => {
+		db.query('SELECT * FROM user_data WHERE "emailId" = $1', [email], (err, checkResult) => {
 			if (err) return res.json({ Error: "Error" });
-			else if (checkResult.length > 0) {
+			else if (checkResult.rows.length > 0) {
 				return res.json({ Error: "User already Exist" });
 			} else {
 				bcrypt.hash(password, saltRounds, (err, hash) => {
@@ -298,12 +298,12 @@ app.post("/signup", (req, res) => {
 					} else {
 						try {
 							db.query(
-								"INSERT INTO user_data (emailId, Password, age, noOfSessions) VALUES (?, ?, ?, ?)",
+								'INSERT INTO user_data ("emailId", "Password", age, "noOfSessions") VALUES ($1, $2, $3, $4) RETURNING *',
 								[email, hash, age, 0],
 								(err, result) => {
 									if (err) return res.json({ Error: "Error L154" });
 									else {
-										const user = result[0];
+										const user = result.rows[0];
 										return res.json({ Status: "Success" });
 									}
 								}
@@ -333,31 +333,31 @@ app.post("/book-appointment", (req, res) => {
 	mt3 = req.body.m3;
 	console.log(email);
 	try {
-		db.query("SELECT * FROM user_data WHERE emailId = ?", [email], (err, checkResult) => {
+		db.query('SELECT * FROM user_data WHERE "emailId" = $1', [email], (err, checkResult) => {
 			if (err) return res.json({ Error: "Error" });
-			else if (checkResult.length === 0) {
+			else if (checkResult.rows.length === 0) {
 				return res.json({ Error: "User not found" });
 			} else {
 				if (therapy === "Individual Therapy") {
 					db.query(
-						"SELECT illness_id FROM indtherapy WHERE illness_name = ?",
+						"SELECT illness_id FROM indtherapy WHERE illness_name = $1",
 						[illness],
 						(err, answer) => {
 							try {
 								db.query(
-									"INSERT INTO indappointments (description, user_id, illness_id, date, timeSlot) VALUES (?, ?, ?, ?, ?)",
+									'INSERT INTO indappointments (description, user_id, illness_id, date, "timeSlot") VALUES ($1, $2, $3, $4, $5)',
 									[
 										description,
-										checkResult[0].userId,
-										answer[0].illness_id,
+										checkResult.rows[0].userId,
+										answer.rows[0].illness_id,
 										date,
 										timeSlot,
 									],
 									(err, result) => {
 										console.log(
 											description,
-											checkResult[0].userId,
-											answer[0].illness_id,
+											checkResult.rows[0].userId,
+											answer.rows[0].illness_id,
 											date,
 											timeSlot
 										);
@@ -377,16 +377,16 @@ app.post("/book-appointment", (req, res) => {
 					);
 				} else {
 					db.query(
-						"SELECT relillness_id FROM reltherapy WHERE relillness_name = ?",
+						"SELECT relillness_id FROM reltherapy WHERE relillness_name = $1",
 						[illness],
 						(err, answer) => {
 							try {
 								db.query(
-									"INSERT INTO relappointments (description, user_id, relillness_id, date, timeSlot) VALUES (?, ?, ?, ?, ?)",
+									'INSERT INTO relappointments (description, user_id, relillness_id, date, "timeSlot") VALUES ($1, $2, $3, $4, $5)',
 									[
 										description,
-										checkResult[0].userId,
-										answer[0].relillness_id,
+										checkResult.rows[0].userId,
+										answer.rows[0].relillness_id,
 										date,
 										timeSlot,
 									],

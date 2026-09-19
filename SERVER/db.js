@@ -1,14 +1,13 @@
 import env from "dotenv";
-import mysql from 'mysql';
-import mysql2 from 'mysql2';
+import pg from 'pg';
+const { Pool } = pg;
 env.config();
 
-const db = mysql2.createConnection({
-	host: process.env.PG_HOST,
-	user: process.env.PG_USER,
-	database: process.env.PG_DATABASE,
-	password: process.env.PG_PASSWORD,
-	port: process.env.PG_PORT
+const db = new Pool({
+	connectionString: process.env.DATABASE_URL,
+	ssl: {
+		require: true,
+	}
 	// host: 'localhost',
 	// user: 'u228689109_dikshantkamble',
 	// database: 'u228689109_SafeZen',
