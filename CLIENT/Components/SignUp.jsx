@@ -22,7 +22,7 @@ export default function SignUp() {
 		window.location.href = url;
 	}
 	// async function auth() {
-	// 	const response = await fetch("https://safezen.onrender.com/request", { method: "post" });
+	// 	const response = await fetch("https://safezen-server.vercel.app/request", { method: "post" });
 
 	// 	const data = await response.json();
 	// 	console.log(data);
@@ -49,7 +49,7 @@ export default function SignUp() {
 			console.log(formData);
 			axios.defaults.withCredentials = true;
 			await axios
-				.post("https://safezen.onrender.com/signup", formData)
+				.post("https://safezen-server.vercel.app/signup", formData)
 				.then((res) => {
 					if (res.data.Status === "Success") {
 						button.classList.remove("button-loader");
@@ -129,7 +129,7 @@ export default function SignUp() {
 									axios.defaults.withCredentials = true;
 									axios
 										.post(
-											"https://safezen.onrender.com/login-google",
+											"https://safezen-server.vercel.app/login-google",
 											{ email: credentials.email, password: "google" },
 											{
 												withCredentials: true,

@@ -8,7 +8,7 @@ export default function Profile() {
 	const handleDelete = async () => {
 		axios.defaults.withCredentials = true;
 		await axios
-			.get("https://safezen.onrender.com/logout")
+			.get("https://safezen-server.vercel.app/logout")
 			.then((res) => {
 				localStorage.clear();
 				//

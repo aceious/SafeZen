@@ -98,9 +98,9 @@ export default function AppointmentForm(props) {
 	}
 	let url;
 	async function getSessionId() {
-		if (props.amt === 1) url = "https://safezen.onrender.com/payment1";
-		else if (props.amt === 2) url = "https://safezen.onrender.com/payment2";
-		else url = "https://safezen.onrender.com/payment3";
+		if (props.amt === 1) url = "https://safezen-server.vercel.app/payment1";
+		else if (props.amt === 2) url = "https://safezen-server.vercel.app/payment2";
+		else url = "https://safezen-server.vercel.app/payment3";
 		try {
 			// console.log(url);
 			const res = await axios.get(url);
@@ -120,7 +120,7 @@ export default function AppointmentForm(props) {
 	async function verifyPayment() {
 		try {
 			// console.log(orderIdRef.current);
-			let res = await axios.post("https://safezen.onrender.com/verify", {
+			let res = await axios.post("https://safezen-server.vercel.app/verify", {
 				orderId: orderIdRef.current,
 			});
 			// console.log(res.data[0]);
@@ -170,7 +170,7 @@ export default function AppointmentForm(props) {
 							// alert("Appointment Booked Email sent");
 							try {
 								await axios
-									.post("https://safezen.onrender.com/book-appointment", formData)
+									.post("https://safezen-server.vercel.app/book-appointment", formData)
 									.then(async (res) => {
 										if (res.data.Status === "Success") {
 											alert("Redirecting to payment gateway!!");

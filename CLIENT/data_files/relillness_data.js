@@ -7,7 +7,7 @@
 // 	console.log(relillness_data);
 // }
 // try {
-// 	await axios.get("https://safezen.onrender.com/RelTherapy")
+// 	await axios.get("https://safezen-server.vercel.app/RelTherapy")
 //     .then(res => setData(res.data))
 //     .catch(err => console.error(err));
 // } catch (err) {

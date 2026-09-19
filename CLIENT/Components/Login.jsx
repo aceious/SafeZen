@@ -38,7 +38,7 @@ export default function Login() {
 			// console.log(formData);
 			axios.defaults.withCredentials = true;
 			axios
-				.post("https://safezen.onrender.com/login", formData, {
+				.post("https://safezen-server.vercel.app/login", formData, {
 					withCredentials: true,
 				})
 				.then((res) => {
@@ -107,7 +107,7 @@ export default function Login() {
 									axios.defaults.withCredentials = true;
 									axios
 										.post(
-											"https://safezen.onrender.com/login-google",
+											"https://safezen-server.vercel.app/login-google",
 											{ email: credentials.email, password: "google" },
 											{
 												withCredentials: true,

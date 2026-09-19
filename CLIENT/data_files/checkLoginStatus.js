@@ -31,7 +31,7 @@
 
 // // 			if (token) {
 // // 				axios
-// // 					.post("https://safezen.onrender.com/verifyToken", { token })
+// // 					.post("https://safezen-server.vercel.app/verifyToken", { token })
 // // 					.then((res) => {
 // // 						if (res.data.Status === "Success") {
 // // 							console.log("Token verified successfully");
@@ -49,7 +49,7 @@
 // // 		} else {
 // // 			try {
 // // 				axios
-// // 					.get("https://safezen.onrender.com")
+// // 					.get("https://safezen-server.vercel.app")
 // // 					.then((res) => {
 // // 						if (res.data.Status === "Success") {
 // // 							auth = true;
@@ -77,7 +77,7 @@
 // export let gmail = "";
 // // try{
 // // 	axios
-// // 	.get("https://safezen.onrender.com/verifyGoogleLogin")
+// // 	.get("https://safezen-server.vercel.app/verifyGoogleLogin")
 // // 	.then((res) => {
 // // 		if (res.data.Status === "Success") {
 // // 			auth = true;
@@ -116,7 +116,7 @@ if (token) {
 	// 		console.log("token yeh hai: ", token);
 	// 		if (token) {
 	// 			await axios
-	// 				.post("https://safezen.onrender.com/verifyToken", { token })
+	// 				.post("https://safezen-server.vercel.app/verifyToken", { token })
 	// 				.then((res) => {
 	// 					if (res.data.Status === "Success") {
 	// 						console.log("abcxyz");
@@ -135,7 +135,7 @@ if (token) {
 	// } else {
 	try {
 		await axios
-			.get("https://safezen.onrender.com")
+			.get("https://safezen-server.vercel.app")
 			.then((res) => {
 				if (res.data.Status === "Success") {
 					console.log("token verify hogaya hai jinam");

@@ -10,7 +10,7 @@ export default function Login() {
 
 	async function auth() {
 		try {
-			const response = await fetch("http://localhost:4666/request", { method: "post" });
+			const response = await fetch("https://safezen-server.vercel.app/request", { method: "post" });
 			const data = await response.json();
 			window.location.href = data.url;
 		} catch (error) {
@@ -31,7 +31,7 @@ export default function Login() {
 	function handleSubmit(event) {
 		event.preventDefault();
 		axios
-			.post("http://localhost:4666/login", formData)
+			.post("https://safezen-server.vercel.app/login", formData)
 			.then((res) => {
 				if (res.data.Status === "Success") {
 					localStorage.setItem("token", res.data.token); // Store the token

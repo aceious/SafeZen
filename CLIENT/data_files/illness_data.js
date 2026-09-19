@@ -8,7 +8,7 @@
 // }
 
 // try {
-// 	await axios.get("https://safezen.onrender.com/IndTherapy")
+// 	await axios.get("https://safezen-server.vercel.app/IndTherapy")
 //     .then(res => setData(res.data))
 //     .catch(err => console.error(err));
 // } catch (err) {

@@ -8,7 +8,7 @@
 // }
 
 // try {
-// 	await axios.get("https://safezen.onrender.com/doctorsData")
+// 	await axios.get("https://safezen-server.vercel.app/doctorsData")
 //     .then(res => setData(res.data))
 //     .catch(err => console.error(err));
 // } catch (err) {
